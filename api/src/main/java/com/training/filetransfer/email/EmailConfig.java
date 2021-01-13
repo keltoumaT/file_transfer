@@ -22,7 +22,15 @@ public class EmailConfig {
     @Value("${spring.mail.password}")
     private String password;
 
-    public void sendEmail(){
+    private String from;
+
+    private String recipient;
+
+    private String subject;
+
+    private String text;
+
+    public void sendEmail(String to, String senderEmail, boolean isSender){
 
         // Create a mail sender
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -34,11 +42,19 @@ public class EmailConfig {
 
         // Create an email instance
 
+        if(!isSender){
+            subject = senderEmail + " sent you a file 🗂";
+        }
+        else{
+            subject = to + " has downloaded your file 🗂";
+            to = senderEmail;
+        }
+
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("keltouma.tahi@gmail.com");
-        mailMessage.setTo("keltouma.tahi@gmail.com");
-        mailMessage.setSubject("test");
-        mailMessage.setText("test test kdclcnaiv");
+        mailMessage.setFrom("contact@filetransfer.io");
+        mailMessage.setTo(to);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(text = "Connect to filetransfer 🗃");
 
         // SEND MAIL
 

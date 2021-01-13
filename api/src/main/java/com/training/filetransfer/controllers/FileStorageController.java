@@ -1,7 +1,6 @@
 package com.training.filetransfer.controllers;
 
 
-import com.training.filetransfer.dtos.FileDto;
 import com.training.filetransfer.services.AmazonClient;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,4 +31,5 @@ public class FileStorageController {
     public File getFile(@RequestPart(value = "fileName")String fileName){
       return amazonClient.objectToFile(fileName);
     }
+
 }

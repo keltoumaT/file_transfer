@@ -10,4 +10,5 @@ import java.util.List;
 public interface FileRepository extends JpaRepository<File, Long> {
 
     List<File> getAllByRecipientEmail(String recipientEmail);
+    File getByRecipientIdAndFileName(Long id, String fileName);
 }

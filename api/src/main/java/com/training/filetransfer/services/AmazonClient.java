@@ -7,12 +7,13 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.training.filetransfer.dtos.FileDto;
+import com.training.filetransfer.repositories.FileRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,9 +40,11 @@ public class AmazonClient {
     private String region;
 
     private final FileServiceImpl fileServiceImpl;
+    private final FileRepository fileRepository;
 
-    public AmazonClient(FileServiceImpl fileServiceImpl) {
+    public AmazonClient(FileServiceImpl fileServiceImpl, FileRepository fileRepository) {
         this.fileServiceImpl = fileServiceImpl;
+        this.fileRepository = fileRepository;
     }
 
     @PostConstruct
@@ -93,8 +96,12 @@ public class AmazonClient {
     }
 
     public File objectToFile(String fileName){
-        File localFile = new File("/Users/keltouma/Documents/video"+ fileName);
+
+        fileServiceImpl.updateFileOnceDownloaded(fileName);
+        File localFile = new File("/Users/keltouma/Documents/"+ fileName);
         s3client.getObject(new GetObjectRequest(bucketName, fileName), localFile);
         return localFile;
     }
+
+
 }

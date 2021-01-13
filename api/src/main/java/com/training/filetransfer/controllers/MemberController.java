@@ -24,8 +24,4 @@ public class MemberController {
         memberService.create(dto);
     }
 
-    @GetMapping("/test")
-    public void test(){
-        emailConfig.sendEmail();
-    }
 }
